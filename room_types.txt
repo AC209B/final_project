@@ -1,0 +1,69 @@
+Entry Lobby: 1
+Outdoor Patio Glazed: 2
+CarPort: 3
+Bath Shower: 4
+Library Archive: 5
+Elevator: 6
+Utility Laundry: 7
+Outdoor Garden: 8
+TechnicalRoom: 9
+Hall: 10
+Kitchen: 11
+Kitchen Open: 12
+Basement: 13
+Storage Bike: 14
+Outdoor: 15
+ExerciseRoom Gym: 16
+Garbage: 17
+Storage: 18
+Den Fireplace: 19
+Outdoor Veranda: 20
+Bath: 21
+Kitchen Kitchenette: 22
+Outdoor Terrace: 23
+Bedroom Guest: 24
+Outdoor Pergola: 25
+Storage Oil: 26
+Bar: 27
+Outdoor Patio: 28
+TechnicalRoom Boiler: 29
+Outdoor Porch: 30
+DraughtLobby: 31
+Outdoor Terrace Covered: 32
+Office: 33
+Storage Cold: 34
+RecreationRoom: 35
+Kitchen Scullery: 36
+Alcove: 37
+OpenToBelow: 38
+Garage: 39
+Attic: 40
+Storage Fuel: 41
+Bedroom: 42
+Hall Corridor: 43
+Entry: 44
+Outdoor Veranda Glazed: 45
+Storage Shed: 46
+Room: 47
+RetailSpace: 48
+Library: 49
+UserDefined: 50
+Elevated: 51
+Undefined: 52
+Room HighCeiling: 53
+Outdoor Balcony: 54
+Dining: 55
+LivingRoom: 56
+Outdoor CoveredArea: 57
+DressingRoom: 58
+Room Cold: 59
+Outdoor Balcony Covered: 60
+Sauna: 61
+Outdoor Kitchen: 62
+Outdoor Terrace Roof: 63
+Outdoor Terrace Covered Open: 64
+SwimmingPool: 65
+Utility Drying: 66
+Storage Wood: 67
+Outdoor Balcony Glazed: 68
+Closet WalkIn: 69
