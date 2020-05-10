@@ -1,3 +1,5 @@
+"""Global constants for use in scripts
+"""
 INPUT_SHAPE = (256, 256, 3)
 OUTPUT_SHAPE = (256, 256)
 
