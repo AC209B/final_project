@@ -148,7 +148,7 @@ class FloorplanSVG:
                 6: "Bedroom",
                 7: "Others"
             }
-            plt.scatter(coords[1], coords[0], color=class2color[cl], alpha=0.5, label=class2label[cl])
+            plt.scatter(coords[1], coords[0], color=class2color[cl], alpha=0.1, label=class2label[cl])
         plt.legend()
 
     @staticmethod
