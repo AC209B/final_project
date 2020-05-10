@@ -11,10 +11,9 @@ if __name__ == "__main__":
     class2room = {v: k for k, v in room2class.items()}
     class2color = get_class2color(max(room2class.values()))
 
+    # Process all the data
     dataset_dir = "./data/cubicasa5k"
-
     txts = ["train.txt", "val.txt", "test.txt"]
-
     for txt in txts:
         dataset_txt = dataset_dir + "/" + txt
         inputs = []
