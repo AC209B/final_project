@@ -6,3 +6,7 @@ data/
 
 # Python cache
 __pycache__/
+
+# Visual studio code
+.vscode/
+.env
