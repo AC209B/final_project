@@ -1,0 +1,26 @@
+Entry Lobby,Entry,DraughtLobby: 1
+Outdoor Patio Glazed,Outdoor Garden,Outdoor Veranda,Outdoor Porch,Outdoor Terrace Covered,Outdoor Veranda Glazed,Outdoor Balcony,Outdoor CoveredArea,Outdoor Balcony Covered,Outdoor Terrace Roof,Outdoor Terrace Covered Open,Outdoor Balcony Glazed,Outdoor Kitchen,Outdoor,Outdoor Terrace,Outdoor Patio,Outdoor Pergola: 2
+CarPort,Garage: 3
+Bath Shower,Bath,Sauna: 4
+Library Archive,Library: 5
+Elevator: 6
+Utility Laundry,Utility Drying: 7
+TechnicalRoom,TechnicalRoom Boiler: 8
+Hall,Hall Corridor: 9
+Kitchen,Kitchen Open,Kitchen Kitchenette,Kitchen Scullery: 10
+Basement: 11
+Storage Bike,Storage,Storage Oil,Storage Fuel,Storage Shed,Storage Wood,Storage Cold: 12
+ExerciseRoom Gym,RecreationRoom: 13
+Garbage: 14
+Den Fireplace,LivingRoom,Alcove: 15
+Bedroom Guest,Bedroom: 16
+Bar,Dining: 17
+Office: 18
+OpenToBelow: 19
+Attic: 20
+Room,Room HighCeiling,Room Cold: 21
+RetailSpace: 22
+UserDefined,Undefined: 23
+Elevated: 24
+DressingRoom,Closet WalkIn: 25
+SwimmingPool: 26

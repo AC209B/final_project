@@ -68,6 +68,19 @@ def read_room2class(fpath):
     return room2class
 
 
+def read_room2class_condensed(fpath):
+    room2class = {}
+    with open(fpath, 'r') as f:
+        line = f.readline()
+        while line:
+            room_types, idx = line.split(":")
+            room_types = tuple(room_types.split(","))
+            room2class[room_types] = int(idx)
+            line = f.readline()
+
+    return room2class
+
+
 def get_class2color(n, name='hsv'):
     cmap = plt.cm.get_cmap(name, n)
 
@@ -98,12 +111,14 @@ class FloorplanSVG:
                 rooms.append([room_type, polygon])
 
         # Create 2D array where each value is class id
-        semantic_map = np.zeros(dtype=int, shape=OUTPUT_SHAPE)
+        semantic_map = np.zeros(dtype=np.int8, shape=OUTPUT_SHAPE)
         for room_type, polygon in rooms:
             rr, cc = skimage.draw.polygon(polygon.y, polygon.x)
             rr = np.clip(rr, 0, OUTPUT_SHAPE[0]-1)
             cc = np.clip(cc, 0, OUTPUT_SHAPE[1]-1)
-            semantic_map[rr, cc] = room2class[room_type]
+            for k in room2class:
+                if room_type in k:
+                    semantic_map[rr, cc] = room2class[k]
         self.semantic_map = semantic_map
 
         # image = svgRead(fpath)
@@ -122,7 +137,19 @@ class FloorplanSVG:
         for cl in class2color:
             coords = np.where(semantic_map == cl)
             if len(coords[0]) == 0: continue
-            plt.plot(coords[1], coords[0], color=class2color[cl], alpha=0.5, label=class2room[cl])
+
+            label = "Others"
+            class2label = {
+                0: "Empty",
+                1: "Entry",
+                2: "Outdoor",
+                3: "Bathroom",
+                4: "Kitchen",
+                5: "Livingroom",
+                6: "Bedroom",
+                7: "Others"
+            }
+            plt.plot(coords[1], coords[0], color=class2color[cl], alpha=0.5, label=class2label[cl])
         plt.legend()
 
     @staticmethod
