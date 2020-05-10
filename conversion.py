@@ -9,7 +9,7 @@ from PIL import Image
 import io
 from lxml import etree
 
-from constants import INPUT_SHAPE, OUTPUT_SHAPE
+from constants import INPUT_SHAPE, OUTPUT_SHAPE, class2label
 
 
 class FloorplanRaw:
@@ -138,16 +138,6 @@ class FloorplanSVG:
             if len(coords[0]) == 0: continue
 
             label = "Others"
-            class2label = {
-                0: "Empty",
-                1: "Entry",
-                2: "Outdoor",
-                3: "Bathroom",
-                4: "Kitchen",
-                5: "Livingroom",
-                6: "Bedroom",
-                7: "Others"
-            }
             plt.scatter(coords[1], coords[0], color=class2color[cl], alpha=0.1, label=class2label[cl])
         plt.legend()
 
