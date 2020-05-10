@@ -74,7 +74,6 @@ def read_room2class_condensed(fpath):
         line = f.readline()
         while line:
             room_types, idx = line.split(":")
-            room_types = tuple(room_types.split(","))
             room2class[room_types] = int(idx)
             line = f.readline()
 
@@ -117,7 +116,7 @@ class FloorplanSVG:
             rr = np.clip(rr, 0, OUTPUT_SHAPE[0]-1)
             cc = np.clip(cc, 0, OUTPUT_SHAPE[1]-1)
             for k in room2class:
-                if room_type in k:
+                if room_type in k.split(","):
                     semantic_map[rr, cc] = room2class[k]
         self.semantic_map = semantic_map
 

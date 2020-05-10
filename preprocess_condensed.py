@@ -1,4 +1,4 @@
-"""Preprocess all inputs and store as files
+"""Preprocess all inputs as store as npy files
 """
 import os
 from conversion import (FloorplanRaw, FloorplanSVG, read_room2class_condensed,

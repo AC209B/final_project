@@ -1,4 +1,4 @@
-"""Preprocess all inputs and store as files
+"""Preprocess all inputs and store as files in folders
 """
 import os
 from conversion import (FloorplanRaw, FloorplanSVG, read_room2class,
