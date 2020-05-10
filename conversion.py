@@ -4,9 +4,7 @@ import matplotlib.pyplot as plt
 from skimage.transform import resize
 import skimage
 import numpy as np
-import cairosvg
 from PIL import Image
-import io
 from lxml import etree
 
 from constants import INPUT_SHAPE, OUTPUT_SHAPE, class2label
@@ -16,28 +14,32 @@ class FloorplanRaw:
     """Class for raw floorplan image
     """
     def __init__(self, folder_path):
+        """Read input image in folder, and scale to required input shape
+        Args:
+            folder_path: the directory path to read input image from
+        """
         fpath = folder_path + "F1_scaled.png"
         image =  plt.imread(fpath)
         self.original_shape = image.shape[:2]
         self.image = resize(image, INPUT_SHAPE)
 
     def show(self):
+        """Show the image for visualization
+        """
         plt.figure(figsize=(10, 10))
         plt.imshow(self.image)
 
 
-def svgRead(filename):
-   """Load an SVG file and return image in Numpy array"""
-   # Make memory buffer
-   mem = io.BytesIO()
-   # Convert SVG to PNG in memory
-   cairosvg.svg2png(url=filename, write_to=mem)
-   # Convert PNG to Numpy array
-   return np.array(Image.open(mem))
-
-
 class Polygon:
+    """Class for representing a polygon in an image
+    """
     def __init__(self, polygon_element, scaling_x, scaling_y):
+        """Read polygon from svg <polygon> tag, and scale properly
+        Args:
+            polygon_element: svg <polygon> element
+            scaling_x: scale factor in x
+            scaling_y: scale factor in y
+        """
         points_str = polygon_element.get("points").split(" ")
         points = []
         for s in points_str:
@@ -45,30 +47,27 @@ class Polygon:
                 a, b = s.split(",")
                 points.append([int(float(a)*scaling_x),
                                int(float(b)*scaling_y)])
+        # polygon vertices
         self.points = points
 
     @property
     def x(self):
+        """Get all the x coordinates of the vertices of the polygon
+        """
         return [p[0] for p in self.points]
 
     @property
     def y(self):
+        """Get all the y coordinates of the vertices of the polygon
+        """
         return [p[1] for p in self.points]
 
 
-def read_room2class(fpath):
-    room2class = {}
-    with open(fpath, 'r') as f:
-        line = f.readline()
-        while line:
-            room_type, idx = line.split(":")
-            room2class[room_type] = int(idx)
-            line = f.readline()
-
-    return room2class
-
-
 def read_room2class_condensed(fpath):
+    """Build a room types to class label dictionary
+    Args:
+        fpath: the file path to the txt file containing {room types: labels}
+    """
     room2class = {}
     with open(fpath, 'r') as f:
         line = f.readline()
@@ -81,6 +80,11 @@ def read_room2class_condensed(fpath):
 
 
 def get_class2color(n, name='hsv'):
+    """Build a class label to RGB dictionary for convenience of visualization
+    Args:
+        n: number of classes
+        name: color space parametrization
+    """
     cmap = plt.cm.get_cmap(name, n)
 
     class2color = {}
@@ -93,8 +97,12 @@ class FloorplanSVG:
     """Class for floorplan SVG file
     """
     def __init__(self, folder_path, original_shape, room2class):
-        self.original_shape = original_shape
-
+        """Read the room type semantic map from a svg file
+        Args:
+            folder_path: the path to the folder containing the svg file
+            original_shape: the shape of the original input image
+            room2class: mapping from room types to class labels
+        """
         scaling_x = OUTPUT_SHAPE[1]/original_shape[1]
         scaling_y = OUTPUT_SHAPE[0]/original_shape[0]
 
@@ -109,10 +117,11 @@ class FloorplanSVG:
                                   scaling_x, scaling_y)
                 rooms.append([room_type, polygon])
 
-        # Create 2D array where each value is class id
+        # Create 2D array where each value is class label
         semantic_map = np.zeros(dtype=np.int8, shape=OUTPUT_SHAPE)
         for room_type, polygon in rooms:
             rr, cc = skimage.draw.polygon(polygon.y, polygon.x)
+            # Clip values that go outside the shape of image
             rr = np.clip(rr, 0, OUTPUT_SHAPE[0]-1)
             cc = np.clip(cc, 0, OUTPUT_SHAPE[1]-1)
             for k in room2class:
@@ -120,37 +129,50 @@ class FloorplanSVG:
                     semantic_map[rr, cc] = room2class[k]
         self.semantic_map = semantic_map
 
-        # image = svgRead(fpath)
-        # self.image = resize(image, (256, 256))
-
     def show(self, base_image, class2color, class2room):
-        """Plot the class labelling by color for visualization
+        """Plot the semantic map by color for visualization
+        Args:
+            base_image: the image to be overlayed upon
+            class2color: class label to RGB mapping
+            class2room: class label to room type mapping
         """
         self.show_map(self.semantic_map, base_image, class2color, class2room)
 
     @staticmethod
     def show_map(semantic_map, base_image, class2color, class2room):
+        """Same as for `self.show` except semantic map is also provided as an argument
+        """
         plt.figure(figsize=(10, 10))
-        # color_image = np.zeros(shape=(*self.semantic_map.shape, 3))
         plt.imshow(base_image)
         for cl in class2color:
             coords = np.where(semantic_map == cl)
             if len(coords[0]) == 0: continue
 
-            label = "Others"
             plt.scatter(coords[1], coords[0], color=class2color[cl], alpha=0.1, label=class2label[cl])
         plt.legend()
 
     @staticmethod
     def get_tag(element):
+        """Helper function for getting tag string of a svg element
+        Args:
+            element: svg element
+        """
         return element.tag.split("}")[1]
 
     @staticmethod
     def is_room(element):
+        """Helper function for checking if a svg element is a room
+        Args:
+            element: svg element
+        """
         cl = element.get("class")
         return cl is not None and cl[:6] == "Space "
 
     @staticmethod
     def get_room_type(element):
+        """Helper function for getting the room type string of a svg element
+        Args:
+            element: svg element
+        """
         return element.get("class")[6:]
 

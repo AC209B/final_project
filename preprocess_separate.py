@@ -1,23 +1,21 @@
-"""Preprocess all inputs and store as files in folders
+"""Preprocess all inputs and store as individual files in folders
 """
 import os
-from conversion import (FloorplanRaw, FloorplanSVG, read_room2class,
+from conversion import (FloorplanRaw, FloorplanSVG, read_room2class_condensed,
                         get_class2color)
 import numpy as np
 
 if __name__ == "__main__":
     # Mappings for dataset
-    room2class = read_room2class("room_types.txt")
+    room2class = read_room2class_condensed("room_types.txt")
     class2room = {v: k for k, v in room2class.items()}
     class2color = get_class2color(max(room2class.values()))
 
+    # Process all the data
     dataset_dir = "./data/cubicasa5k"
-
     txts = ["train.txt", "val.txt", "test.txt"]
-
     for txt in txts:
         dataset_txt = dataset_dir + "/" + txt
-
         with open(dataset_txt, "r") as f:
             line = f.readline().strip()
             i = 0
@@ -34,6 +32,7 @@ if __name__ == "__main__":
                 if not os.path.exists(sample_dir):
                     os.makedirs(sample_dir)
 
+                # Store input images and semantic map labels
                 input_npz = sample_dir + "input.npy"
                 np.save(open(input_npz, "wb"), raw.image)
 

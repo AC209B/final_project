@@ -1,3 +1,5 @@
+"""Process the data folder to assemble all the possible room types
+"""
 from os import walk
 from lxml import etree
 from conversion import FloorplanSVG
