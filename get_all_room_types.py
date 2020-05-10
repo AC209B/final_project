@@ -1,4 +1,4 @@
-"""Process the data folder to assemble all the possible room types
+"""Process the data folder to assemble all the possible room types and store as a txt file
 """
 from os import walk
 from lxml import etree
