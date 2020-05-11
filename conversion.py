@@ -139,17 +139,27 @@ class FloorplanSVG:
         self.show_map(self.semantic_map, base_image, class2color, class2room)
 
     @staticmethod
-    def show_map(semantic_map, base_image, class2color, class2room):
+    def show_map(semantic_map, base_image, class2color, class2room, ax=None):
         """Same as for `self.show` except semantic map is also provided as an argument
         """
-        plt.figure(figsize=(10, 10))
-        plt.imshow(base_image)
-        for cl in class2color:
-            coords = np.where(semantic_map == cl)
-            if len(coords[0]) == 0: continue
+        if ax is None:
+            plt.figure(figsize=(10, 10))
+            plt.imshow(base_image)
+            for cl in class2color:
+                coords = np.where(semantic_map == cl)
+                if len(coords[0]) == 0: continue
 
-            plt.scatter(coords[1], coords[0], color=class2color[cl], alpha=0.1, label=class2label[cl])
-        plt.legend()
+                plt.scatter(coords[1], coords[0], color=class2color[cl], alpha=0.1, label=class2label[cl])
+            plt.legend()
+        else:
+            ax.imshow(base_image)
+            for cl in class2color:
+                coords = np.where(semantic_map == cl)
+                if len(coords[0]) == 0: continue
+
+                ax.scatter(coords[1], coords[0], color=class2color[cl], alpha=0.1, label=class2label[cl])
+                ax.axis("off")
+            ax.legend()
 
     @staticmethod
     def get_tag(element):
